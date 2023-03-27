@@ -1,12 +1,4 @@
 ---
-- name: "Disable SELinux"
-  become: true
-  ansible.posix.selinux:
-    state: disabled
-  tags:
-    - system
-    - candlepin
-
 - name: "Install Candlepin requirements"
   become: true
   ansible.builtin.package:
