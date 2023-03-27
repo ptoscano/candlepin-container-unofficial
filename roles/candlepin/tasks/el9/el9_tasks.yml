@@ -4,10 +4,3 @@
 
 - name: "Include postgresql tasks"
   ansible.builtin.import_tasks: el9_postgresql.yml
-  when:
-    - cp_configure_postgresql | bool
-
-- name: "Include mariadb tasks"
-  ansible.builtin.import_tasks: el9_mariadb.yml
-  when:
-    - cp_configure_mariadb | bool

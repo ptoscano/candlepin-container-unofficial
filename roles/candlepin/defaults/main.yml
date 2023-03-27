@@ -3,8 +3,6 @@ candlepin_user: candlepin
 candlepin_user_home: "/home/{{ candlepin_user }}"
 candlepin_home: "{{ candlepin_user_home }}/devel/candlepin"
 
-cp_configure_postgresql: true
-cp_configure_mariadb: true
 cp_configure_user_env: false
 
 cp_git_checkout: true

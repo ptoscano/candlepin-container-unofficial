@@ -19,9 +19,6 @@ Role Variables
 There are a number of variables which enable various features and aspects of a developer environment. The
 primary flow control variables are the six boolean variables listed below:
 
-- `cp_configure_postgresql`: controls whether or not PostgreSQL will be installed and configured; defaults to
-  true
-- `cp_configure_mariadb`: controls whether or not MariaDB will be installed and configured; defaults to true
 - `cp_configure_user_env`: controls whether or not some convenience features for the user environment will
   be setup, such as bash prompts, colors, copying in SSH keys, etc.; defaults to false
 - `cp_git_checkout`: whether or not the Candlepin repo will be cloned via git; defaults to true
@@ -75,11 +72,6 @@ with that tool for details on its parameters.
 
 By default, Candlepin will be deployed in a way that drops and re-creates its database from scratch, imports
 synthetic test data, and then regenerates the candlepin.conf with default settings for PostgreSQL support.
-To change this to use MySQL/MariaDB instead, add the `-m` argument to the variable:
-
-```yaml
-  cp_deploy_args: '-gtam'
-```
 
 Vagrant Integration
 -------------------
@@ -101,15 +93,13 @@ An example playbook for Vagrant use is as follows:
     candlepin_user: vagrant
     candlepin_home: /vagrant
 
-    cp_configure_postgresql: true
-    cp_configure_mariadb: true
     cp_configure_user_env: true
 
     cp_git_checkout: false
     cp_deploy: false
 ```
 
-The above playbook would provision the VM with PostgreSQL and MariaDB support, configure the user environment,
+The above playbook would provision the VM with PostgreSQL support, configure the user environment,
 and configure Tomcat for remote debugging and profiling. It would not check out the Candlepin repo, and,
 obviously, would not deploy it.
 
