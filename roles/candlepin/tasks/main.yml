@@ -22,11 +22,6 @@
   tags:
     - always
 
-- name: "Include Candlepin debug tasks"
-  ansible.builtin.import_tasks: common/cp_debugging.yml
-  when:
-    - cp_configure_debugging | bool
-
 - name: "Include Candleping setup tasks"
   ansible.builtin.import_tasks: common/cp_setup.yml
   become: true

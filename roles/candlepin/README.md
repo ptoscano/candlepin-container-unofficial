@@ -24,8 +24,6 @@ primary flow control variables are the six boolean variables listed below:
 - `cp_configure_mariadb`: controls whether or not MariaDB will be installed and configured; defaults to true
 - `cp_configure_user_env`: controls whether or not some convenience features for the user environment will
   be setup, such as bash prompts, colors, copying in SSH keys, etc.; defaults to false
-- `cp_configure_debugging`: controls whether or not Tomcat will be configured for remote debugging and
-  profiling via YourKit; defaults to false
 - `cp_git_checkout`: whether or not the Candlepin repo will be cloned via git; defaults to true
 - `cp_deploy`: whether or not Candlepin will be deployed after provisionining the system; defaults to true
 
@@ -83,18 +81,6 @@ To change this to use MySQL/MariaDB instead, add the `-m` argument to the variab
   cp_deploy_args: '-gtam'
 ```
 
-YourKit Configuration
----------------------
-
-If the `cp_configure_debugging` variable is set, this role will configure Tomcat for both remote debugging
-support, and, optionally, YourKit profiling support. To setup YourKit with this role, a Linux-compatible
-agent library must be present on the host at the location specified in the `cp_yourkit_library` variable. If
-this value is not provided, or the library is not present at that location, the YourKit tasks will be skipped.
-
-- `cp_yourkit_library`: the path to the YourKit Java profiling agent on the host system; defaults to
-  "/opt/yjp/bin/linux-x86-64/libyjpagent.so"
-- `cp_yourkit_agent_port`: the port on which the agent should listen for profiling clients; defaults to 35675
-
 Vagrant Integration
 -------------------
 
@@ -118,7 +104,6 @@ An example playbook for Vagrant use is as follows:
     cp_configure_postgresql: true
     cp_configure_mariadb: true
     cp_configure_user_env: true
-    cp_configure_debugging: true
 
     cp_git_checkout: false
     cp_deploy: false
