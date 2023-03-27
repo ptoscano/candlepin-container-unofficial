@@ -1,7 +1,7 @@
 ---
 - name: "Install Candlepin requirements"
   become: true
-  ansible.builtin.package:
+  ansible.builtin.dnf:
     name:
       - createrepo_c
       - expect
@@ -20,6 +20,7 @@
       - unzip
       - wget
     state: present
+    install_weak_deps: false
   tags:
     - base_deps
     - candlepin

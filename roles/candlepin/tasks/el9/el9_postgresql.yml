@@ -1,13 +1,14 @@
 ---
 - name: "Install PostgreSQL packages"
   become: true
-  ansible.builtin.package:
+  ansible.builtin.dnf:
     name:
       - postgresql-server
       - postgresql
       - postgresql-jdbc
       - python3-psycopg2
     state: present
+    install_weak_deps: false
   tags:
     - postgresql
     - candlepin
