@@ -1,0 +1,79 @@
+name: image_build
+
+on:
+  workflow_dispatch:
+    inputs:
+      candlepin-ref:
+        description: 'The reference of Candlepin to build'
+        required: true
+        default: 'main'
+        type: string
+      push-image:
+        description: 'Push image'
+        required: false
+        default: true
+        type: boolean
+      update-stable:
+        description: "Update 'stable' tag"
+        required: false
+        default: true
+        type: boolean
+
+env:
+  IMAGE_NAME: candlepin-unofficial
+
+jobs:
+  image_build:
+    name: "image_build"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Base setup
+        run: |
+          sudo apt-get update
+          sudo apt-get -y dist-upgrade
+          sudo apt-get -y install \
+            git-core \
+            buildah \
+            podman
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initial build
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: cp_base
+          tags: build
+          containerfiles: |
+            ./Containerfile
+          build-args: |
+            cp_ref=${{ inputs.candlepin-ref }}
+          oci: true
+
+      - name: Customization
+        run: |
+          set -euo pipefail
+          podman run --name=candlepin --uts=host --publish=8443:8443 --privileged --detach -t cp_base
+          # wait for systemd to start in the container
+          sleep 5
+          podman exec candlepin systemctl start multi-user.target
+          podman exec -u candlepin candlepin ansible-playbook -v ansible/playbook.yml
+          podman exec candlepin poweroff
+          sleep 5
+          podman commit candlepin ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }}
+
+      - name: Push to the registry
+        id: push-to-registry
+        uses: redhat-actions/push-to-registry@v2
+        if: ${{ inputs.push-image }}
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ inputs.update-stable && format('{0} {1}', inputs.candlepin-ref, 'stable') || inputs.candlepin-ref }}
+          registry: ghcr.io/${{ github.actor }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
