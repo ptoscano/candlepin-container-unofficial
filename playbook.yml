@@ -1,0 +1,8 @@
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars.yml
+  roles:
+    - role: candlepin
+      vars:
+        cp_deploy_args: "-g -a -f -t -r"
