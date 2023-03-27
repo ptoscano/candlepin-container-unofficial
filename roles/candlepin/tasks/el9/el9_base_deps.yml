@@ -4,24 +4,21 @@
   ansible.builtin.package:
     name:
       - createrepo_c
-      - gcc
+      - expect
       - gettext
-      - git
+      - git-core
+      - hostname
       - java-17-openjdk-devel
       - jss
-      - make
       - openssl
       - pki-servlet-engine
-      - platform-python
-      - python3
+      - python-unversioned-command
       - python3-libxml2
       - python3-requests
       - rpm-build
       - rpm-sign
       - unzip
       - wget
-      - zlib
-      - zlib-devel
     state: present
   tags:
     - base_deps
