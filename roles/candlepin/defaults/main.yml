@@ -3,8 +3,6 @@ candlepin_user: candlepin
 candlepin_user_home: "/home/{{ candlepin_user }}"
 candlepin_home: "{{ candlepin_user_home }}/devel/candlepin"
 
-cp_configure_user_env: false
-
 cp_git_checkout: true
 cp_git_repo: "https://github.com/candlepin/candlepin"
 cp_git_ref: main

@@ -19,8 +19,6 @@ Role Variables
 There are a number of variables which enable various features and aspects of a developer environment. The
 primary flow control variables are the six boolean variables listed below:
 
-- `cp_configure_user_env`: controls whether or not some convenience features for the user environment will
-  be setup, such as bash prompts, colors, copying in SSH keys, etc.; defaults to false
 - `cp_git_checkout`: whether or not the Candlepin repo will be cloned via git; defaults to true
 - `cp_deploy`: whether or not Candlepin will be deployed after provisionining the system; defaults to true
 
@@ -92,8 +90,6 @@ An example playbook for Vagrant use is as follows:
     ansible_user: vagrant
     candlepin_user: vagrant
     candlepin_home: /vagrant
-
-    cp_configure_user_env: true
 
     cp_git_checkout: false
     cp_deploy: false

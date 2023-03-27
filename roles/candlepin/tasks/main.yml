@@ -33,10 +33,3 @@
   become_user: "{{ candlepin_user }}"
   when:
     - cp_deploy | bool
-
-- name: "Include user env tasks"
-  ansible.builtin.import_tasks: common/user_env.yml
-  become: true
-  become_user: "{{ candlepin_user }}"
-  when:
-    - cp_configure_user_env | bool
