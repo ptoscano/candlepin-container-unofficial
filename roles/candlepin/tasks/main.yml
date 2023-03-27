@@ -5,12 +5,11 @@
   tags:
     - always
 
-- name: "Include EL8 tasks"
-  ansible.builtin.include_tasks:
-    file: el8/el8_tasks.yml
+- name: "Check supported OS"
+  meta: end_play
   when:
-    - ansible_distribution in ["CentOS", "RedHat"]
-    - ansible_distribution_major_version == "8"
+    - ansible_distribution not in ["CentOS", "RedHat"]
+    - ansible_distribution_major_version | int != 9
   tags:
     - always
 
