@@ -13,8 +13,8 @@ on:
         required: false
         default: true
         type: boolean
-      update-stable:
-        description: "Update 'stable' tag"
+      update-latest:
+        description: "Update 'latest' tag"
         required: false
         default: true
         type: boolean
@@ -60,6 +60,13 @@ jobs:
             ./Containerfile
           oci: true
 
+      - name: Get container tag
+        id: container-tag
+        run: |
+          V=${{ inputs.candlepin-ref }} echo "::set-output name=tag::${INPUT,,}"
+          export tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g')
+          echo ::set-output name=tag::$tag
+
       - name: Customization
         run: |
           set -euo pipefail
@@ -73,12 +80,12 @@ jobs:
           podman exec candlepin poweroff
           # wait for system shutdown
           sleep 5
-          podman commit candlepin ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }}
+          podman commit candlepin ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }}
 
-      - name: Tag image as 'stable'
-        if: inputs.update-stable
+      - name: Tag image as 'latest'
+        if: inputs.update-latest
         run: |
-          podman tag ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }} ${{ env.IMAGE_NAME }}:stable
+          podman tag ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }} ${{ env.IMAGE_NAME }}:latest
 
       - name: Push to the registry
         id: push-to-registry
@@ -86,7 +93,7 @@ jobs:
         if: ${{ inputs.push-image }}
         with:
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ inputs.update-stable && format('{0} {1}', inputs.candlepin-ref, 'stable') || inputs.candlepin-ref }}
+          tags: ${{ inputs.update-latest && format('{0} {1}', steps.container-tag.outputs.tag, 'latest') || steps.container-tag.outputs.tag }}
           registry: ghcr.io/${{ github.actor }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
