@@ -11,6 +11,8 @@ RUN dnf --setopt install_weak_deps=False -y update && dnf clean all
 RUN dnf --setopt install_weak_deps=False -y install \
   systemd ansible-core sudo acl \
   python3.11-psycopg2 \
+  createrepo_c expect gettext git-core hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
+  postgresql-server postgresql postgresql-jdbc \
   && dnf clean all
 
 # create a separate user
