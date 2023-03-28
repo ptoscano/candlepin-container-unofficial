@@ -71,8 +71,14 @@ jobs:
           podman exec candlepin dnf -y remove ansible-core 'python3.11*' createrepo_c expect gettext hostname python3-libxml2 python3-requests rpm-build rpm-sign unzip
           podman exec -u candlepin candlepin rm -rf ansible/
           podman exec candlepin poweroff
+          # wait for system shutdown
           sleep 5
           podman commit candlepin ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }}
+
+      - name: Tag image as 'stable'
+        if: inputs.update-stable
+        run: |
+          podman tag ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }} ${{ env.IMAGE_NAME }}:stable
 
       - name: Push to the registry
         id: push-to-registry
