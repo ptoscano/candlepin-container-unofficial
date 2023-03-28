@@ -36,6 +36,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y dist-upgrade
           sudo apt-get -y install \
+            ansible-core \
             git-core \
             buildah \
             podman
@@ -49,6 +50,10 @@ jobs:
           repository: candlepin/candlepin
           path: candlepin.git
           ref: ${{ inputs.candlepin-ref }}
+
+      - name: Install ansible bits
+        run: |
+          ansible-galaxy collection install -r requirements.yml
 
       - name: Initial build
         id: build-image
@@ -70,13 +75,13 @@ jobs:
       - name: Customization
         run: |
           set -euo pipefail
-          podman run --name=candlepin --uts=host --publish=8443:8443 --privileged --detach -t cp_base
+          podman run --name=candlepin --uts=host --publish=8443:8443 --publish=2222:22 --privileged --detach -t cp_base
           # wait for systemd to start in the container
           sleep 5
           podman exec candlepin systemctl start multi-user.target
-          podman exec -u candlepin candlepin ansible-playbook -v ansible/playbook.yml
-          podman exec candlepin dnf -y remove ansible-core 'python3.11*' createrepo_c expect gettext hostname python3-libxml2 python3-requests rpm-build rpm-sign unzip
-          podman exec -u candlepin candlepin rm -rf ansible/
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory -v playbook.yml
+          podman exec candlepin systemctl enable tomcat
+          podman exec candlepin dnf -y remove git-core python3-psycopg2 createrepo_c expect gettext hostname python3-libxml2 python3-requests rpm-build rpm-sign unzip
           podman exec candlepin poweroff
           # wait for system shutdown
           sleep 5
