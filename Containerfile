@@ -24,8 +24,9 @@ WORKDIR /home/candlepin
 RUN mkdir -p ansible/roles/candlepin
 COPY playbook.yml requirements.yml ansible
 COPY roles/candlepin ansible/roles/candlepin
-RUN printf -- "---\ncp_git_ref: $cp_ref\n" > ansible/vars.yml
 RUN ansible-galaxy collection install -r ansible/requirements.yml
+RUN mkdir -p devel
+RUN git clone -b $cp_ref --depth 1 https://github.com/candlepin/candlepin.git devel/candlepin
 
 USER root
 CMD ["/sbin/init"]

@@ -1,7 +1,5 @@
 - hosts: localhost
   connection: local
-  vars_files:
-    - vars.yml
   roles:
     - role: candlepin
       vars:

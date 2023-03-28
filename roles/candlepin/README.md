@@ -19,7 +19,6 @@ Role Variables
 There are a number of variables which enable various features and aspects of a developer environment. The
 primary flow control variables are the six boolean variables listed below:
 
-- `cp_git_checkout`: whether or not the Candlepin repo will be cloned via git; defaults to true
 - `cp_deploy`: whether or not Candlepin will be deployed after provisionining the system; defaults to true
 
 For some of these tasks, some operations may be modified or configured by changing further variables. A full
@@ -46,17 +45,6 @@ from the host, these variables might be configured as follows:
   candlepin_user: vagrant
   candlepin_home: /vagrant
 ```
-
-Git Configuration
------------------
-
-This role can clone Candlepin directly from git rather than having to map or copy it onto the host. Three
-variables control whether or not this action is performed, and what repo and tag is cloned.
-
-- `cp_git_checkout`: whether or not to perform a git checkout at all; defaults to true
-- `cp_git_repo`: a URI to the repo to check out, may use any repo reference supported by the git command;
-  defaults to "https://github.com/candlepin/candlepin"
-- `cp_git_ref`: a git ref tag indicating the branch, tag, or reference to checkout; defaults to "main"
 
 Deploying Candlpin
 ------------------
@@ -91,13 +79,11 @@ An example playbook for Vagrant use is as follows:
     candlepin_user: vagrant
     candlepin_home: /vagrant
 
-    cp_git_checkout: false
     cp_deploy: false
 ```
 
 The above playbook would provision the VM with PostgreSQL support, configure the user environment,
-and configure Tomcat for remote debugging and profiling. It would not check out the Candlepin repo, and,
-obviously, would not deploy it.
+and configure Tomcat for remote debugging and profiling. It would not, obviously, deploy it.
 
 Unit Testing & Molecule
 -----------------------
