@@ -86,14 +86,13 @@ jobs:
           podman commit candlepin ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }}
 
       - name: Tag image as 'latest'
-        if: inputs.update-latest
+        if: inputs.push-image && inputs.update-latest
         run: |
           podman tag ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }} ${{ env.IMAGE_NAME }}:latest
 
       - name: Push to the registry
-        id: push-to-registry
         uses: redhat-actions/push-to-registry@v2
-        if: ${{ inputs.push-image }}
+        if: inputs.push-image
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ inputs.update-latest && format('{0} {1}', steps.container-tag.outputs.tag, 'latest') || steps.container-tag.outputs.tag }}
