@@ -14,12 +14,3 @@
   tags:
     - candlepin
     - candlepin-setup
-
-# Ensure Candlepin exists in a deployable state before attempting to run the bundle command
-- name: "Ensure the Candlepin directory exists"
-  ansible.builtin.stat:
-    path: "{{ candlepin_home }}"
-  register: candlepin_home_dir
-  tags:
-    - candlepin
-    - candlepin-setup
