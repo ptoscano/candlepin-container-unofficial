@@ -13,6 +13,14 @@
   tags:
     - always
 
+- name: "Fix permissions"
+  become: true
+  file:
+    dest: "{{ candlepin_user_home }}"
+    owner: "{{ candlepin_user }}"
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
 - name: "Include EL9 tasks"
   ansible.builtin.include_tasks:
     file: el9/el9_tasks.yml

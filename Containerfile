@@ -1,7 +1,5 @@
 FROM quay.io/centos/centos:stream9
 
-ARG cp_ref=main
-
 # make sure the system is up-to-date
 RUN dnf --setopt install_weak_deps=False -y update && dnf clean all
 
@@ -11,7 +9,7 @@ RUN dnf --setopt install_weak_deps=False -y update && dnf clean all
 RUN dnf --setopt install_weak_deps=False -y install \
   systemd ansible-core sudo acl \
   python3.11-psycopg2 \
-  createrepo_c expect gettext git-core hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
+  createrepo_c expect gettext hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
   postgresql-server postgresql postgresql-jdbc \
   && dnf clean all
 
@@ -25,8 +23,8 @@ RUN mkdir -p ansible/roles/candlepin
 COPY playbook.yml requirements.yml ansible
 COPY roles/candlepin ansible/roles/candlepin
 RUN ansible-galaxy collection install -r ansible/requirements.yml
-RUN mkdir -p devel
-RUN git clone -b $cp_ref --depth 1 https://github.com/candlepin/candlepin.git devel/candlepin
+RUN mkdir -p devel/candlepin
+COPY candlepin.git devel/candlepin
 
 USER root
 CMD ["/sbin/init"]
