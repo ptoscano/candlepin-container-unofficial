@@ -34,7 +34,6 @@ jobs:
       - name: Base setup
         run: |
           sudo apt-get update
-          sudo apt-get -y dist-upgrade
           sudo apt-get -y install \
             ansible-core \
             git-core \
