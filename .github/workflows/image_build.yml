@@ -67,9 +67,8 @@ jobs:
       - name: Get container tag
         id: container-tag
         run: |
-          V=${{ inputs.candlepin-ref }} echo "::set-output name=tag::${INPUT,,}"
           export tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g')
-          echo ::set-output name=tag::$tag
+          echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Customization
         run: |
