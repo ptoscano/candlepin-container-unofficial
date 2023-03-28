@@ -68,6 +68,8 @@ jobs:
           sleep 5
           podman exec candlepin systemctl start multi-user.target
           podman exec -u candlepin candlepin ansible-playbook -v ansible/playbook.yml
+          podman exec candlepin dnf -y remove ansible-core 'python3.11*' createrepo_c expect gettext hostname python3-libxml2 python3-requests rpm-build rpm-sign unzip
+          podman exec -u candlepin candlepin rm -rf ansible/
           podman exec candlepin poweroff
           sleep 5
           podman commit candlepin ${{ env.IMAGE_NAME }}:${{ inputs.candlepin-ref }}
