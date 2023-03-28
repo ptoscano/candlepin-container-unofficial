@@ -9,6 +9,7 @@
     dest: "{{ candlepin_home }}"
     force: true
     clone: true
+    depth: 1
   when:
     - cp_git_checkout | bool
   tags:
