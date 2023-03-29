@@ -55,7 +55,6 @@ jobs:
           ansible-galaxy collection install -r requirements.yml
 
       - name: Initial build
-        id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: cp_base
@@ -83,19 +82,24 @@ jobs:
           podman exec candlepin poweroff
           # wait for system shutdown
           sleep 5
-          podman commit candlepin ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }}
+          podman commit candlepin cp_custom
 
-      - name: Tag image as 'latest'
-        if: inputs.push-image && inputs.update-latest
-        run: |
-          podman tag ${{ env.IMAGE_NAME }}:${{ steps.container-tag.outputs.tag }} ${{ env.IMAGE_NAME }}:latest
+      - name: Build final image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ inputs.update-latest && format('{0} {1}', steps.container-tag.outputs.tag, 'latest') || steps.container-tag.outputs.tag }}
+          base-image: cp_custom
+          entrypoint: /sbin/init
+          oci: true
 
       - name: Push to the registry
         uses: redhat-actions/push-to-registry@v2
         if: inputs.push-image
         with:
-          image: ${{ env.IMAGE_NAME }}
-          tags: ${{ inputs.update-latest && format('{0} {1}', steps.container-tag.outputs.tag, 'latest') || steps.container-tag.outputs.tag }}
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
           registry: ghcr.io/${{ github.actor }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
