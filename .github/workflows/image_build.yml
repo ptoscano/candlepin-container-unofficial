@@ -75,11 +75,7 @@ jobs:
           podman run --name=candlepin --uts=host --publish=8443:8443 --publish=2222:22 --privileged --detach -t cp_base
           # wait for systemd to start in the container
           sleep 5
-          podman exec candlepin systemctl start multi-user.target
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory -v playbook.yml
-          podman exec candlepin systemctl enable tomcat
-          podman exec candlepin dnf -y remove git-core python3-psycopg2 createrepo_c expect gettext hostname python3-libxml2 python3-requests rpm-build rpm-sign unzip
-          podman exec candlepin rm -rf /var/cache/dnf/ '/usr/share/doc/*' '/usr/share/man/*'
           podman exec candlepin poweroff
           # wait for system shutdown
           sleep 5

@@ -1,5 +1,44 @@
 - hosts: localhost
-  roles:
-    - role: candlepin
+  tasks:
+    - name: Enable multi-user.target
+      become: true
+      command:
+        argv:
+          - systemctl
+          - start
+          - multi-user.target
+
+    - name: Deploy Candlepin
+      include_role:
+        name: candlepin
       vars:
         cp_deploy_args: "-g -a -f -t -r"
+
+    - name: Enable tomcat
+      become: true
+      service:
+        name: tomcat
+        enabled: true
+
+    - name: Drop no more needed packages
+      become: true
+      package:
+        name:
+          - git-core
+          - python3-psycopg2
+          - createrepo_c
+          - expect
+          - gettext
+          - hostname
+          - python3-libxml2
+          - python3-requests
+          - rpm-build
+          - rpm-sign
+          - unzip
+        state: absent
+
+    - name: Cleanups
+      become: true
+      shell: |
+        set -euo pipefail
+        rm -rf /var/cache/dnf/ '/usr/share/doc/*' '/usr/share/man/*'
