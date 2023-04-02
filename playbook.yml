@@ -30,6 +30,8 @@
           - expect
           - gettext
           - hostname
+          - man-db
+          - python-unversioned-command
           - python3-libxml2
           - python3-requests
           - rpm-build
@@ -41,4 +43,5 @@
       become: true
       shell: |
         set -euo pipefail
-        rm -rf /var/cache/dnf/ '/usr/share/doc/*' '/usr/share/man/*'
+        rm -rf /var/cache/dnf/ /var/cache/man/ '/usr/share/doc/*' '/usr/share/man/*'
+        rm -rf /home/candlepin/.gradle/ /home/candlepin/.java/
