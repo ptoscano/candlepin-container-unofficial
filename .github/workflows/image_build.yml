@@ -91,6 +91,10 @@ jobs:
           entrypoint: /sbin/init
           oci: true
 
+      - name: List images
+        run: |
+          podman images
+
       - name: Push to the registry
         uses: redhat-actions/push-to-registry@v2
         if: inputs.push-image
