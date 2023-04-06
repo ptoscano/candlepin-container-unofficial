@@ -20,6 +20,20 @@
         name: tomcat
         enabled: true
 
+    - name: Stop tomcat
+      become: true
+      service:
+        name: tomcat
+        state: stopped
+
+    - name: Kill gradle process
+      command:
+        argv:
+          - pkill
+          - "-e"
+          - "-f"
+          - gradle
+
     - name: Replace context.xml with working one
       become: true
       copy:
@@ -31,7 +45,7 @@
 
     - name: Drop no more needed packages
       become: true
-      package:
+      dnf:
         name:
           - git-core
           - python3-psycopg2
@@ -43,10 +57,14 @@
           - python-unversioned-command
           - python3-libxml2
           - python3-requests
+          - python3-six
+          - policycoreutils-python-utils
           - rpm-build
           - rpm-sign
           - unzip
+          - "*-srpm-macros"
         state: absent
+        autoremove: true
 
     - name: Cleanups
       become: true
@@ -58,6 +76,7 @@
         - /home/candlepin/.java
         - /root/rpmbuild
         - /var/cache/dnf
+        - /var/lib/tomcat/webapps/candlepin.war
         - /var/tmp/candlepin
 
     - name: Cleanups (via shell)
