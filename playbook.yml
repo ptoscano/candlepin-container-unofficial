@@ -20,6 +20,15 @@
         name: tomcat
         enabled: true
 
+    - name: Replace context.xml with working one
+      become: true
+      copy:
+        src: res/context.xml
+        dest: /var/lib/tomcat/webapps/ROOT/META-INF/context.xml
+        mode: preserve
+        owner: tomcat
+        group: tomcat
+
     - name: Drop no more needed packages
       become: true
       package:
