@@ -1,14 +1,14 @@
 FROM quay.io/centos/centos:stream9
 
-# make sure the system is up-to-date
-RUN dnf --setopt install_weak_deps=False -y update && dnf clean all
-
-# install the basic stuff to run the ansible playbook
-RUN dnf --setopt install_weak_deps=False -y install \
-  systemd openssh-server passwd sudo acl \
-  git-core python3-psycopg2 \
-  createrepo_c expect gettext hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
-  postgresql-server postgresql postgresql-jdbc \
+# first make sure the system is up-to-date;
+# install what is needed to deploy and run candlepin,
+# and the basic stuff to run the ansible playbook
+RUN dnf --setopt install_weak_deps=False -y update \
+  && dnf --setopt install_weak_deps=False -y install \
+    systemd openssh-server passwd sudo acl \
+    git-core python3-psycopg2 \
+    createrepo_c expect gettext hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
+    postgresql-server postgresql postgresql-jdbc \
   && dnf clean all
 
 # create a separate user
