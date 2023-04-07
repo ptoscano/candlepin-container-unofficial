@@ -72,7 +72,7 @@ jobs:
       - name: Customization
         run: |
           set -euo pipefail
-          podman run --name=candlepin --uts=host --publish=8443:8443 --publish=2222:22 --privileged --detach -t cp_base
+          podman run --name=candlepin --hostname=candlepin.local --publish=8443:8443 --publish=2222:22 --privileged --detach -t cp_base
           # wait for systemd to start in the container
           sleep 5
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory -v playbook.yml
