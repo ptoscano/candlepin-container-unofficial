@@ -11,6 +11,10 @@ RUN dnf --setopt install_weak_deps=False -y update \
     postgresql-server postgresql postgresql-jdbc \
   && dnf clean all
 
+# set the wanted java
+RUN alternatives --set java /usr/lib/jvm/java-17-openjdk-*/bin/java \
+  && alternatives --set javac /usr/lib/jvm/java-17-openjdk-*/bin/javac
+
 # create a separate user
 RUN useradd candlepin && echo "candlepin" | passwd candlepin --stdin
 COPY sudoers.d/candlepin /etc/sudoers.d

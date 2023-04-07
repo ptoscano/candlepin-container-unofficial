@@ -1,22 +1,4 @@
 ---
-# Impl note:
-# The invocations of alternatives need to be run in the context of the original user, but with
-# root permissions. Using become and the raw shell command invokes these in root's environment,
-# which will fail at best, or silently map the wrong command at worst.
-- name: "Configure alternatives: java"
-  ansible.builtin.shell: sh -c 'sudo alternatives --set java /usr/lib/jvm/java-17-openjdk-*/bin/java'
-  changed_when: false
-  tags:
-    - base_deps
-    - candlepin
-
-- name: "Configure alternatives: javac"
-  ansible.builtin.shell: sh -c 'sudo alternatives --set javac /usr/lib/jvm/java-17-openjdk-*/bin/javac'
-  changed_when: false
-  tags:
-    - base_deps
-    - candlepin
-
 - name: "Update Tomcat configuration to use Alternatives-configured Java"
   become: true
   ansible.builtin.lineinfile:
