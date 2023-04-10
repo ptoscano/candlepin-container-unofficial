@@ -72,13 +72,29 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - /home/candlepin/.gradle
         - /home/candlepin/.java
         - /home/candlepin/devel/candlepin/build
         - /root/rpmbuild
         - /var/cache/dnf
         - /var/lib/tomcat/webapps/candlepin.war
         - /var/tmp/candlepin
+
+    - name: Find .gradle directories
+      find:
+        paths: /home/candlepin
+        patterns: .gradle
+        hidden: true
+        recurse: true
+        file_type: directory
+      register: gradle_dirs
+
+    - name: Cleanups (.gradle directories)
+      become: true
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        "{{ gradle_dirs.files | map(attribute='path') }}"
 
     - name: Cleanups (via shell)
       become: true
