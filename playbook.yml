@@ -74,6 +74,7 @@
       loop:
         - /home/candlepin/.gradle
         - /home/candlepin/.java
+        - /home/candlepin/devel/candlepin/build
         - /root/rpmbuild
         - /var/cache/dnf
         - /var/lib/tomcat/webapps/candlepin.war
