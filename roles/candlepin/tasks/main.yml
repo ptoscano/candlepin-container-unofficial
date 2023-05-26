@@ -9,7 +9,7 @@
   meta: end_play
   when:
     - ansible_distribution not in ["CentOS", "RedHat"]
-    - ansible_distribution_major_version | int != 9
+    - ansible_distribution_major_version | int != 8
   tags:
     - always
 
@@ -21,12 +21,12 @@
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 
-- name: "Include EL9 tasks"
+- name: "Include EL8 tasks"
   ansible.builtin.include_tasks:
-    file: el9/el9_tasks.yml
+    file: el8/el8_tasks.yml
   when:
     - ansible_distribution in ["CentOS", "RedHat"]
-    - ansible_distribution_major_version == "9"
+    - ansible_distribution_major_version == "8"
   tags:
     - always
 

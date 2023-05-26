@@ -1,0 +1,6 @@
+---
+- name: "Include base deps tasks"
+  ansible.builtin.import_tasks: el8_base_deps.yml
+
+- name: "Include postgresql tasks"
+  ansible.builtin.import_tasks: el8_postgresql.yml
