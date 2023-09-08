@@ -59,6 +59,7 @@
           - python3-requests
           - python3-six
           - policycoreutils-python-utils
+          - procps
           - rpm-build
           - rpm-sign
           - unzip
