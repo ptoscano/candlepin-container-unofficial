@@ -7,7 +7,7 @@ RUN dnf --setopt install_weak_deps=False -y update \
   && dnf --setopt install_weak_deps=False -y install \
     systemd openssh-server passwd sudo acl \
     git-core python3-psycopg2 \
-    createrepo_c expect gettext hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign unzip wget \
+    createrepo_c expect gettext hostname java-17-openjdk-devel jss openssl pki-servlet-engine python-unversioned-command python3-libxml2 python3-requests rpm-build rpm-sign tomcat unzip wget \
     postgresql-server postgresql postgresql-jdbc \
   && dnf clean all
 
