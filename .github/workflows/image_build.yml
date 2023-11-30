@@ -29,6 +29,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      ANSIBLE_FORCE_COLOR: 1
 
     steps:
       - name: Base setup
