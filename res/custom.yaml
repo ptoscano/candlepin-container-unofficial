@@ -1,0 +1,2 @@
+candlepin.conf:
+  auth_cloud_enable: 'true'

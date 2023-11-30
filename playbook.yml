@@ -8,11 +8,17 @@
           - start
           - multi-user.target
 
+    - name: Upload custom.yaml
+      copy:
+        src: res/custom.yaml
+        dest: /home/candlepin/devel/candlepin/custom.yaml
+        mode: preserve
+
     - name: Deploy Candlepin
       include_role:
         name: candlepin
       vars:
-        cp_deploy_args: "-g -a -f -t -r"
+        cp_deploy_args: "-g -a -f -t -r -H"
 
     - name: Enable tomcat
       become: true
@@ -25,6 +31,13 @@
       service:
         name: tomcat
         state: stopped
+
+    - name: Switch mode back to standalone
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/candlepin/candlepin.conf
+        regexp: '^candlepin.standalone='
+        line: candlepin.standalone=true
 
     - name: Kill gradle process
       command:
