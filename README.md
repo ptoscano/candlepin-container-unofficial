@@ -29,6 +29,8 @@ To make the system trust Candlepin's TLS certificate, copy it to
 ```console
 $ podman cp candlepin:/etc/candlepin/certs/candlepin-ca.crt . && \
   sudo mv ./candlepin-ca.crt /etc/rhsm/ca/candlepin-ca.pem
+$ sudo ln -s /etc/rhsm/ca/candlepin-ca.pem \
+  /etc/pki/ca-trust/source/anchors/candlepin-ca.pem
 $ update-ca-trust
 $ curl https://127.0.0.1:8443/candlepin/status
 ```
