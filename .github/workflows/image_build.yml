@@ -22,6 +22,9 @@ on:
 env:
   IMAGE_NAME: candlepin-unofficial
 
+run-name: >
+  ${{ format('Image build ({0}, push: {1}, latest: {2})', inputs.candlepin-ref, inputs.push-image && 'Y' || 'N', inputs.update-latest && 'Y' || 'N') }}
+
 jobs:
   image_build:
     name: "image_build"
