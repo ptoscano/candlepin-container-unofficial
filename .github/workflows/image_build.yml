@@ -72,7 +72,7 @@ jobs:
       - name: Get container tag
         id: container-tag
         run: |
-          export tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g;s,/,-,g')
+          export tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g;s,/,-,g' | tr '[:upper:]' '[:lower:]')
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Customization
