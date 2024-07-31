@@ -604,7 +604,113 @@
             "name": "donaldduck",
             "displayName": "Donald Duck",
             "contentAccessModeList": "entitlement,org_environment",
-            "contentAccessMode": "org_environment"
+            "contentAccessMode": "org_environment",
+            "content": [
+                {
+                    "name": "donaldy-content",
+                    "id": 7000,
+                    "label": "donaldy-content-label",
+                    "type": "yum",
+                    "vendor": "test-vendor",
+                    "content_url": "/donaldy/bar/path/common",
+                    "gpg_url": "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-candlepin",
+                    "metadata_expire": 0,
+                    "packages": ["cool-mouse"]
+                },
+                {
+                    "name": "donaldy-tagged-content",
+                    "id": 7001,
+                    "label": "donaldy-tagged-content",
+                    "type": "yum",
+                    "vendor": "test-vendor",
+                    "content_url": "/donaldy/bar/path/always",
+                    "gpg_url": "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-candlepin",
+                    "required_tags": "TAG1,TAG2",
+                    "packages": ["schrodingers-kitten"]
+                },
+                {
+                    "name": "donaldy-never-enabled-content",
+                    "id": 7002,
+                    "label": "donaldy-never-enabled-content",
+                    "type": "yum",
+                    "vendor": "test-vendor",
+                    "content_url": "/donaldy/bar/path/never",
+                    "gpg_url": "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-candlepin",
+                    "metadata_expire": 600,
+                    "packages": ["fluffy-snake"]
+                }
+            ],
+            "products": [
+                {
+                    "name": "Donaldy OS Premium Architecture Bits",
+                    "id": "7050",
+                    "version": "6.1",
+                    "arch": "ppc64",
+                    "provided_products": [
+                        "37060"
+                    ],
+                    "attributes": {
+                        "sockets": 2,
+                        "vcpu": 4,
+                        "warning_period": 30
+                    },
+                    "content": [
+                        [7000, false]
+                    ]
+                },
+                {
+                    "name": "Donaldy OS Developer Bits",
+                    "id": "7051",
+                    "content": [
+                        [7000, false],
+                        [7001, false]
+                    ]
+                },
+                {
+                    "name": "Donaldy OS Server Bundled (2 Sockets, Standard Support)",
+                    "id": "donaldyos-server-2-socket-std",
+                    "version": "6.1",
+                    "type": "MKT",
+                    "provided_products": [
+                        "37065",
+                        "37070",
+                        "37067",
+                        "37068",
+                        "37069",
+                        "37060",
+                        "7050",
+                        "7051"
+                    ],
+                    "attributes": {
+                        "sockets": 2,
+                        "vcpu": 4,
+                        "warning_period": 30,
+                        "management_enabled" : 1,
+                        "support_level" : "Standard",
+                        "support_type" : "L1-L3"
+                    }
+                },
+                {
+                    "name": "Donaldy OS Instance Based one socket",
+                    "id": "donaldyos-onesocketib",
+                    "type": "MKT",
+                    "provided_products": [
+                        "32060",
+                        "7050",
+                        "7051"
+                    ],
+                    "attributes": {
+                        "instance_multiplier": 2,
+                        "sockets": 1,
+                        "virt_limit": 1,
+                        "host_limited": "true",
+                        "stacking_id": 15,
+                        "multi-entitlement": "yes",
+                        "support_level" : "Standard",
+                        "support_type" : "L1-L3"
+                    }
+                }
+            ]
         }
     ],
     "users": [
