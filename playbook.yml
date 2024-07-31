@@ -14,11 +14,60 @@
         dest: /home/candlepin/devel/candlepin/custom.yaml
         mode: preserve
 
+    - name: Create the repos directory
+      become: true
+      file:
+        path: /var/lib/tomcat/webapps/ROOT
+        state: directory
+
+    - name: Create the repos META-INF subdirectory
+      become: true
+      file:
+        path: /var/lib/tomcat/webapps/ROOT/META-INF
+        state: directory
+
     - name: Deploy Candlepin
       include_role:
         name: candlepin
       vars:
-        cp_deploy_args: "-g -a -f -t -r -H"
+        cp_deploy_args: "-g -a -f -H"
+
+    - name: Deploy the test data
+      command:
+        argv:
+          - ./test_data_importer.py
+          - test_data.json
+        chdir: /home/candlepin/test-data
+
+    - name: Move generated_certs to home
+      command:
+        argv:
+          - mv
+          - /home/candlepin/test-data/generated_certs
+          - /home/candlepin/
+
+    - name: Create the compatibility location for generated_certs
+      file:
+        src: ../../generated_certs
+        dest: /home/candlepin/devel/candlepin/generated_certs
+        state: link
+
+    - name: Create the test repositories
+      become: true
+      command:
+        argv:
+          - ./create_test_repos.py
+          - test_data.json
+        chdir: /home/candlepin/test-data
+
+    - name: Switch ownership of repos to tomcat
+      become: true
+      command:
+        argv:
+          - chown
+          - "-R"
+          - tomcat:tomcat
+          - /var/lib/tomcat/webapps/ROOT
 
     - name: Enable tomcat
       become: true

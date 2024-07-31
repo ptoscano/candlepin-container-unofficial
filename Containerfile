@@ -23,6 +23,7 @@ USER candlepin
 WORKDIR /home/candlepin
 RUN mkdir -p devel/candlepin
 COPY candlepin.git devel/candlepin
+COPY res/test-data test-data
 
 USER root
 CMD ["/sbin/init"]
