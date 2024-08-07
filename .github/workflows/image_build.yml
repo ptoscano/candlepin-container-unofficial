@@ -8,6 +8,11 @@ on:
         required: true
         default: 'main'
         type: string
+      tag:
+        description: "Tag (default: from ref)"
+        required: false
+        default: ""
+        type: string
       push-image:
         description: 'Push image'
         required: false
@@ -23,7 +28,7 @@ env:
   IMAGE_NAME: candlepin-unofficial
 
 run-name: >
-  ${{ format('Image build ({0}, push: {1}, latest: {2})', inputs.candlepin-ref, inputs.push-image && 'Y' || 'N', inputs.update-latest && 'Y' || 'N') }}
+  ${{ format('Image build ({0}{1}, push: {2}, latest: {3})', inputs.candlepin-ref, inputs.tag && format(' as {0}', inputs.tag) || '', inputs.push-image && 'Y' || 'N', inputs.update-latest && 'Y' || 'N') }}
 
 jobs:
   image_build:
@@ -72,7 +77,11 @@ jobs:
       - name: Get container tag
         id: container-tag
         run: |
-          export tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g;s,/,-,g' | tr '[:upper:]' '[:lower:]')
+          if [ -n "${{ inputs.tag }}" ]; then
+            tag=${{ inputs.tag }}
+          else
+            tag=$(echo ${{ inputs.candlepin-ref }} | sed 's/^candlepin-//g;s,/,-,g' | tr '[:upper:]' '[:lower:]')
+          fi
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Customization
