@@ -421,7 +421,6 @@
                     "name": "Admin OS Premium Architecture Bits",
                     "id": "5050",
                     "version": "6.1",
-                    "arch": "ppc64",
                     "provided_products": [
                         "37060"
                     ],
@@ -533,7 +532,6 @@
                     "name": "Snowy OS Premium Architecture Bits",
                     "id": "6050",
                     "version": "6.1",
-                    "arch": "ppc64",
                     "provided_products": [
                         "37060"
                     ],
@@ -645,7 +643,6 @@
                     "name": "Donaldy OS Premium Architecture Bits",
                     "id": "7050",
                     "version": "6.1",
-                    "arch": "ppc64",
                     "provided_products": [
                         "37060"
                     ],
@@ -1302,7 +1299,6 @@
             "name": "Awesome OS Premium Architecture Bits",
             "id": "37062",
             "version": "6.1",
-            "arch": "ppc64",
             "provided_products": [
                 "37060"
             ],
