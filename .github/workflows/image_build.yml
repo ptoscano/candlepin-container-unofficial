@@ -69,7 +69,6 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: cp_base
-          tags: build
           containerfiles: |
             ./Containerfile
           oci: true
