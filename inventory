@@ -1,1 +1,1 @@
-localhost ansible_port=2222 ansible_user=candlepin ansible_password=candlepin
+candlepin ansible_host=localhost ansible_port=2222 ansible_user=candlepin ansible_password=candlepin
