@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: candlepin
   tasks:
     - name: Enable multi-user.target
       become: true
