@@ -6,7 +6,7 @@ To start the container, run
 
 ```console
 $ podman run -d --name candlepin -p 8080:8080 \
-  --pull newer ghcr.io/ptoscano/candlepin-unofficial:latest
+  --pull newer ghcr.io/candlepin/candlepin-unofficial:latest
 ```
 
 To start the container with TLS certificates, run
@@ -14,7 +14,7 @@ To start the container with TLS certificates, run
 ```console
 $ podman run -d --name candlepin \
   -p 8080:8080 -p 8443:8443 --hostname candlepin.local \
-  --pull newer ghcr.io/ptoscano/candlepin-unofficial:latest
+  --pull newer ghcr.io/candlepin/candlepin-unofficial:latest
 ```
 
 You can verify the container is running by performing a curl call to
